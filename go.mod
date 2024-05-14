@@ -1,4 +1,4 @@
-module ConnectService
+module github.com/seoyhaein/ConnectService
 
 go 1.22
 
