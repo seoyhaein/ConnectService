@@ -1,7 +1,8 @@
 ### 확인사항
 - gogoproto(https://github.com/cosmos/gogoproto) 사용 안함.  
+- gogoproto 사용했을때는 ~.pb.go 파일 하나만 사용하면 되었지만 표준방식으로 사용하면 두개를 만들어야 한다.  
 - 일단 성능적으로 낫다고 하지만, 안정적으로 standard proto 를 사용하기로 함.  
-- pb 파일 생성은 window/linux 둘다 작성 함.
+~~- pb 파일 생성은 window/linux 둘다 작성 함.~~ (Makefile 만들었음.)  
 
 ### 설치사항
 - protoc 설치
@@ -17,3 +18,6 @@
 ~~- 최신 버전으로 업그레이드~~
 - 서비스 등록  
 - 서버 초기 동작 확인  
+- API 해설 문서 만들기  
+~~- 코드 정리(notion 참고, 진행 중)~~    
+- Makefile 추가했는데 보강해야 하고, 리눅스에서 테스트 해야한다.  

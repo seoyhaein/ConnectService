@@ -35,8 +35,8 @@ func Server() error {
 		grpc.MaxConcurrentStreams(maxStreams),
 	}
 	grpcServer := grpc.NewServer(opts...)
-
-	// TODO: gRPC 서비스 등록 예정
+	// 서비스 등록
+	RegisterJobsManSrv(grpcServer)
 
 	log.Printf("gRPC server started, address: %s", address)
 
