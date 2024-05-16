@@ -13,7 +13,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-// JobManSrv는 Job 관리 서비스를 구현합니다.
 type JobManSrv struct {
 	pb.UnimplementedLongLivedJobCallServer
 	subscribers sync.Map
@@ -26,7 +25,6 @@ type sub struct {
 	finished chan<- bool
 }
 
-// RegisterJobsManSrv는 JobManSrv 서비스를 gRPC 서버에 등록합니다.
 func RegisterJobsManSrv(service *grpc.Server) {
 	pb.RegisterLongLivedJobCallServer(service, newJobsManSrv())
 }
