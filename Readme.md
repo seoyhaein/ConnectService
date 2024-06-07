@@ -25,6 +25,7 @@
 - exe 확장자는 윈도우 버전이다.  
 - 윈도우와 리눅스를 동일하게 작성하게 만들었다. 
 - grpcurl 은 1.9.1 최신 버전을 설치 하였다.(https://github.com/fullstorydev/grpcurl/releases)  
+- grpc 다른 proto 파일들도 추가, 리눅스 버전도 해줘야 함.
 
 ### TODO
 ~~- 최신 버전으로 업그레이드~~

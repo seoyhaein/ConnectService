@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package protos;
+
+option go_package = "github.com/seoyhaein/ConnectService/protos";
+
+import "google/protobuf/empty.proto";
+
+message HelloWorldResponse {
+  string output_message = 1;
+}
+
+// 입력 파라미터 없음.
+service HelloWorldService {
+  rpc Hi(google.protobuf.Empty) returns (HelloWorldResponse) {}
+}
