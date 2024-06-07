@@ -3,7 +3,7 @@ package config
 import (
 	"encoding/json"
 	"flag"
-	"io/ioutil"
+	"os"
 )
 
 // 10/30 grpc config 파일 적용 추후
@@ -18,27 +18,26 @@ type Config struct {
 	// Version string
 }
 
-// 10/16 개선점을 찾을 수 있을까?
-// 1030 개선점은 아래 작성해두었다.
-/*
-	이함수의 개선점은?  현재 이 struct 는 간단한 struct 지만 커지면??
-	이함수가 개선되면 당연히 이 함수를 호출하는 부분도 수정되어야함.
-
-func DefaultConfig() Config {
-	return Config{
-		address:             "https://daum.net",
-		Silent:         true,
-		ConfigFilePath: "./config/config.json",
-	}
-}
-*/
-// 10/30 grpc 적용 때문에 수정
 func DefaultConfig() *Config {
 	return &Config{
 		Address:        ":50052",
 		Silent:         true,
 		ConfigFilePath: "./config/config.json",
 	}
+}
+
+func (c *Config) LoadFromFile() error {
+	file, err := os.ReadFile(c.ConfigFilePath)
+	if err != nil {
+		return err
+	}
+
+	err = json.Unmarshal(file, c)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 /*
@@ -53,25 +52,15 @@ func DefaultConfig() *Config {
 
 func (c *Config) RegisterConfig(fs *flag.FlagSet) (*Config, error) {
 
-	// 일반적으로 리턴값에서 error 는 가장 오른쪽에 둔다.
-	// error 의 인터페이스를 활용해서 error 메세지 표시를 바꿀수 있다.
-	// 함수 만들어서 처리, 개선할 필요가 있다.
-
-	// TODO 10/30 수정해 줘야 함.
-	// 성능의 문제를 생각할 필요가 있는가 생각이 든다. 일단 투두로 등록하자
 	var conf = c
 
-	/*
-		default value 가 세팅된다.
-		형태론적으로 혼동이 올 수 있는데 세번째 파라미터는 디폴트 값이다.
-	*/
 	fs.StringVar(&c.Address, "u", c.Address, "server address")
 	fs.BoolVar(&c.Silent, "silent", c.Silent, "Log nothing to stdout/stderr")
 	fs.StringVar(&c.ConfigFilePath, "path", c.ConfigFilePath, "config file path")
 
 	// 최소 디폴트 값의 url 주소를 가지고 온다.
 	// TODO 향후 grpc 및 기타 tcp 서버 관련 정보를 configfile 에 담는다.
-	file, err := ioutil.ReadFile(c.ConfigFilePath)
+	file, err := os.ReadFile(c.ConfigFilePath)
 
 	if err != nil {
 		return nil, err

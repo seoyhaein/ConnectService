@@ -1,6 +1,7 @@
 package v1rpc
 
 import (
+	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
 	"strings"
@@ -37,6 +38,8 @@ func Server() error {
 	grpcServer := grpc.NewServer(opts...)
 	// 서비스 등록
 	RegisterJobsManSrv(grpcServer)
+	// TODO 향후 수정한다. Reflection 서비스 등록
+	reflection.Register(grpcServer)
 
 	log.Printf("gRPC server started, address: %s", address)
 
