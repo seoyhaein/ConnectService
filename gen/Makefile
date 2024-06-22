@@ -1,13 +1,8 @@
-# Makefile for generating Go code from Protocol Buffers using protoc
-
 # Path to the protoc compiler
 PROTOC_PATH=/usr/local/bin/protoc
 
 # Path to the Protocol Buffers folder
 PROTO_PATH=../protos
-
-# Path to the Protocol Buffers file
-PROTO_FILE=$(PROTO_PATH)/jobs.proto
 
 # Directory to save the generated files
 OUT_DIR=$(PROTO_PATH)
@@ -16,15 +11,20 @@ OUT_DIR=$(PROTO_PATH)
 PROTOC_GEN_GO_PATH=/usr/local/bin/protoc-gen-go
 PROTOC_GEN_GO_GRPC_PATH=/usr/local/bin/protoc-gen-go-grpc
 
+# Find all .proto files in the PROTO_PATH
+PROTO_FILES=$(wildcard $(PROTO_PATH)/*.proto)
+
 # Default target
 all: generate
 
 # Generate Protocol Buffers code
-generate:
-	$(PROTOC_PATH) --proto_path=$(PROTO_PATH) --plugin=$(PROTOC_GEN_GO_PATH) --go_out=$(OUT_DIR) --go_opt=paths=source_relative $(PROTO_FILE)
-	$(PROTOC_PATH) --proto_path=$(PROTO_PATH) --plugin=$(PROTOC_GEN_GO_GRPC_PATH) --go-grpc_out=$(OUT_DIR) --go-grpc_opt=paths=source_relative $(PROTO_FILE)
+generate: $(PROTO_FILES)
+	@for file in $^; do \
+		$(PROTOC_PATH) --proto_path=$(PROTO_PATH) --plugin=$(PROTOC_GEN_GO_PATH) --go_out=$(OUT_DIR) --go_opt=paths=source_relative $$file; \
+		$(PROTOC_PATH) --proto_path=$(PROTO_PATH) --plugin=$(PROTOC_GEN_GO_GRPC_PATH) --go-grpc_out=$(OUT_DIR) --go-grpc_opt=paths=source_relative $$file; \
+	done
 
-# Clean generated files (add the files to be cleaned if needed)
+# Clean generated files
 clean:
 	rm -f $(OUT_DIR)/*.pb.go
 
