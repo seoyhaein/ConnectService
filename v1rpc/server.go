@@ -38,7 +38,7 @@ func Server() error {
 	grpcServer := grpc.NewServer(opts...)
 	// 서비스 등록
 	RegisterJobsManSrv(grpcServer)
-	RegisterFileTransferManSrv(grpcServer)
+	RegisterHelloWorldManSrv(grpcServer)
 	// TODO 향후 수정한다. Reflection 서비스 등록
 	reflection.Register(grpcServer)
 
